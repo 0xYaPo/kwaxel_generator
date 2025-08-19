@@ -9,7 +9,8 @@ export default defineConfig({
         'react', 
         'react-dom',
         '@multiversx/sdk-dapp',
-        '@multiversx/sdk-dapp/hooks'
+        '@multiversx/sdk-dapp/hooks',
+        '@multiversx/sdk-dapp/ui'
       ],
     },
   },
