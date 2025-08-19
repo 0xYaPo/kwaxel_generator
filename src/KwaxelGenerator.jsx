@@ -431,182 +431,184 @@ export default function KwaxelGenerator() {
   }, [undo, redo]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-4 space-y-4">
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2">
-        <ToolButton
-          active={tool === "pencil"}
-          onClick={() => setTool("pencil")}
-          title="Pencil (B)"
-        >
-          ✏️
-        </ToolButton>
-        <ToolButton
-          active={tool === "eraser"}
-          onClick={() => setTool("eraser")}
-          title="Eraser (E)"
-        >
-          🧽
-        </ToolButton>
-        <ToolButton
-          active={tool === "fill"}
-          onClick={() => setTool("fill")}
-          title="Fill (G)"
-        >
-          🪣
-        </ToolButton>
-        <ToolButton
-          active={tool === "eyedropper"}
-          onClick={() => setTool("eyedropper")}
-          title="Eyedropper (I)"
-        >
-          🎯
-        </ToolButton>
-
-        <div className="h-6 w-px bg-gray-300 mx-2" />
-
-        <label className="inline-flex items-center gap-2 text-sm">
-          Color
-          <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            className="w-10 h-8 p-0 border rounded cursor-pointer"
-            aria-label="Current color"
-          />
-        </label>
-
-        <label className="inline-flex items-center gap-2 text-sm">
-          Brush
-          <select
-            value={brush}
-            onChange={(e) => setBrush(parseInt(e.target.value, 10))}
-            className="border rounded px-2 py-1"
-            aria-label="Brush size"
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="w-full max-w-5xl mx-auto p-4 space-y-4">
+        {/* Toolbar */}
+        <div className="flex flex-wrap items-center gap-2">
+          <ToolButton
+            active={tool === "pencil"}
+            onClick={() => setTool("pencil")}
+            title="Pencil (B)"
           >
-            <option value={1}>1×1</option>
-            <option value={2}>2×2</option>
-            <option value={4}>4×4</option>
-          </select>
-        </label>
-
-        <label className="inline-flex items-center gap-2 text-sm">
-          Zoom
-          <input
-            type="range"
-            min={8}
-            max={32}
-            step={1}
-            value={scale}
-            onChange={(e) => setScale(parseInt(e.target.value, 10))}
-            aria-label="Zoom"
-          />
-          <span className="tabular-nums text-xs">{scale}x</span>
-        </label>
-
-        <label className="inline-flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={showGrid}
-            onChange={(e) => setShowGrid(e.target.checked)}
-          />
-          Grid
-        </label>
-
-        <div className="ml-auto flex items-center gap-2">
-          <button
-            className="px-3 py-1.5 text-sm rounded border hover:bg-gray-50"
-            onClick={() => undo()}
+            ✏️
+          </ToolButton>
+          <ToolButton
+            active={tool === "eraser"}
+            onClick={() => setTool("eraser")}
+            title="Eraser (E)"
           >
-            Undo
-          </button>
-          <button
-            className="px-3 py-1.5 text-sm rounded border hover:bg-gray-50"
-            onClick={() => redo()}
+            🧽
+          </ToolButton>
+          <ToolButton
+            active={tool === "fill"}
+            onClick={() => setTool("fill")}
+            title="Fill (G)"
           >
-            Redo
-          </button>
-          <input
-            ref={inputFileRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) =>
-              e.target.files?.[0] && importFromFile(e.target.files[0])
-            }
-          />
-          <button
-            className="px-3 py-1.5 text-sm rounded border hover:bg-gray-50"
-            onClick={() => inputFileRef.current?.click()}
+            🪣
+          </ToolButton>
+          <ToolButton
+            active={tool === "eyedropper"}
+            onClick={() => setTool("eyedropper")}
+            title="Eyedropper (I)"
           >
-            Import
-          </button>
-          <div className="relative">
-            <ExportMenu onExport={exportPng} />
+            🎯
+          </ToolButton>
+
+          <div className="h-6 w-px bg-gray-300 mx-2" />
+
+          <label className="inline-flex items-center gap-2 text-sm">
+            Color
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              className="w-10 h-8 p-0 border rounded cursor-pointer"
+              aria-label="Current color"
+            />
+          </label>
+
+          <label className="inline-flex items-center gap-2 text-sm">
+            Brush
+            <select
+              value={brush}
+              onChange={(e) => setBrush(parseInt(e.target.value, 10))}
+              className="border rounded px-2 py-1"
+              aria-label="Brush size"
+            >
+              <option value={1}>1×1</option>
+              <option value={2}>2×2</option>
+              <option value={4}>4×4</option>
+            </select>
+          </label>
+
+          <label className="inline-flex items-center gap-2 text-sm">
+            Zoom
+            <input
+              type="range"
+              min={8}
+              max={32}
+              step={1}
+              value={scale}
+              onChange={(e) => setScale(parseInt(e.target.value, 10))}
+              aria-label="Zoom"
+            />
+            <span className="tabular-nums text-xs">{scale}x</span>
+          </label>
+
+          <label className="inline-flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={showGrid}
+              onChange={(e) => setShowGrid(e.target.checked)}
+            />
+            Grid
+          </label>
+
+          <div className="ml-auto flex items-center gap-2">
+            <button
+              className="px-3 py-1.5 text-sm rounded border hover:bg-gray-50"
+              onClick={() => undo()}
+            >
+              Undo
+            </button>
+            <button
+              className="px-3 py-1.5 text-sm rounded border hover:bg-gray-50"
+              onClick={() => redo()}
+            >
+              Redo
+            </button>
+            <input
+              ref={inputFileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) =>
+                e.target.files?.[0] && importFromFile(e.target.files[0])
+              }
+            />
+            <button
+              className="px-3 py-1.5 text-sm rounded border hover:bg-gray-50"
+              onClick={() => inputFileRef.current?.click()}
+            >
+              Import
+            </button>
+            <div className="relative">
+              <ExportMenu onExport={exportPng} />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Canvas block — wrapper uses exact content size so overlay fits perfectly */}
-      <div
-        className="relative inline-block overflow-hidden bg-white"
-        style={{
-          width: `${W * scale}px`,
-          height: `${H * scale}px`,
-          boxSizing: "content-box",
-        }}
-      >
-        <canvas
-          ref={canvasRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
-          className="touch-none select-none block"
+        {/* Canvas block — wrapper uses exact content size so overlay fits perfectly */}
+        <div
+          className="relative inline-block overflow-hidden bg-white"
           style={{
-            display: "block",
-            imageRendering: "pixelated",
-            backgroundImage:
-              "linear-gradient(45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
-              "linear-gradient(-45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
-              "linear-gradient(45deg, transparent 75%, rgba(0,0,0,.08) 75%)," +
-              "linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.08) 75%)",
-            backgroundSize: `${scale}px ${scale}px`,
-            backgroundPosition: checkerPos,
+            width: `${W * scale}px`,
+            height: `${H * scale}px`,
+            boxSizing: "content-box",
           }}
-          role="img"
-          aria-label="32 by 32 pixel canvas"
-        />
-        <canvas
-          ref={overlayRef}
-          className="absolute pointer-events-none"
-          style={{ inset: 0, display: "block", zIndex: 1 }}
-          aria-hidden
-        />
-      </div>
-
-      {/* Swatches */}
-      <div className="flex flex-wrap gap-2">
-        {[
-          "#000000",
-          "#ffffff",
-          "#ef4444",
-          "#f59e0b",
-          "#fbbf24",
-          "#10b981",
-          "#3b82f6",
-          "#8b5cf6",
-          "#ec4899",
-        ].map((sw) => (
-          <button
-            key={sw}
-            className="w-6 h-6 rounded border"
-            style={{ background: sw }}
-            onClick={() => setColor(sw)}
-            aria-label={`Set color ${sw}`}
-            title={sw}
+        >
+          <canvas
+            ref={canvasRef}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerLeave={onPointerUp}
+            className="touch-none select-none block"
+            style={{
+              display: "block",
+              imageRendering: "pixelated",
+              backgroundImage:
+                "linear-gradient(45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
+                "linear-gradient(-45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
+                "linear-gradient(45deg, transparent 75%, rgba(0,0,0,.08) 75%)," +
+                "linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.08) 75%)",
+              backgroundSize: `${scale}px ${scale}px`,
+              backgroundPosition: checkerPos,
+            }}
+            role="img"
+            aria-label="32 by 32 pixel canvas"
           />
-        ))}
+          <canvas
+            ref={overlayRef}
+            className="absolute pointer-events-none"
+            style={{ inset: 0, display: "block", zIndex: 1 }}
+            aria-hidden
+          />
+        </div>
+
+        {/* Swatches */}
+        <div className="flex flex-wrap gap-2">
+          {[
+            "#000000",
+            "#ffffff",
+            "#ef4444",
+            "#f59e0b",
+            "#fbbf24",
+            "#10b981",
+            "#3b82f6",
+            "#8b5cf6",
+            "#ec4899",
+          ].map((sw) => (
+            <button
+              key={sw}
+              className="w-6 h-6 rounded border"
+              style={{ background: sw }}
+              onClick={() => setColor(sw)}
+              aria-label={`Set color ${sw}`}
+              title={sw}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
