@@ -9,10 +9,10 @@
 /* Baseline reset & theme tokens */
 *, *::before, *::after { box-sizing: border-box; }
 :root{
-  --bg: #f8fafc;        /* slate-50 */
+  --bg: #57abff;        /* slate-50 */
   --text: #0f172a;      /* slate-900 */
   --muted: #6b7280;     /* gray-500 */
-  --border: #e5e7eb;    /* gray-200 */
+  --border: #5991ff;    /* gray-200 */
   --ring: rgba(2,132,199,.35); /* sky-600 w/ alpha */
   --radius: 12px;
 }
