@@ -180,78 +180,65 @@ export default function KwaxelGenerator() {
 
   /** DRAW — main canvas */
   const redraw = useCallback(() => {
-    const cvs = canvasRef.current;
-    if (!cvs) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    
+    // Set dimensions accounting for device pixel ratio
+    canvas.width = W * scale * dpr;
+    canvas.height = H * scale * dpr;
+    canvas.style.width = `${W * scale}px`;
+    canvas.style.height = `${H * scale}px`;
 
-    const cssW = W * scale;
-    const cssH = H * scale;
-
-    // HiDPI backing store
-    cvs.width = Math.round(cssW * dpr);
-    cvs.height = Math.round(cssH * dpr);
-    cvs.style.width = `${cssW}px`;
-    cvs.style.height = `${cssH}px`;
-
-    const ctx = cvs.getContext("2d", { willReadFrequently: true });
+    ctx.scale(dpr, dpr);
     ctx.imageSmoothingEnabled = false;
 
-    // Write pixels to ImageData (robust byte order)
-    const img = pixelsToImageData(pixels, W, H);
-
-    // Draw 1:1 into a temp canvas, then scale to target CSS size
+    // Draw pixels
+    const imageData = pixelsToImageData(pixels);
     const tmp = document.createElement("canvas");
     tmp.width = W;
     tmp.height = H;
-    const tctx = tmp.getContext("2d");
-    tctx.putImageData(img, 0, 0);
+    tmp.getContext("2d").putImageData(imageData, 0, 0);
 
-    ctx.save();
-    // Make 1 unit == 1 CSS pixel
-    ctx.scale(dpr, dpr);
-    ctx.drawImage(tmp, 0, 0, W, H, 0, 0, cssW, cssH);
-    ctx.restore();
+    ctx.drawImage(tmp, 0, 0, W, H, 0, 0, W * scale, H * scale);
   }, [pixels, scale, dpr]);
 
-  /** DRAW — grid overlay sized from constants to avoid first-paint drift */
+  /** DRAW — grid overlay */
   const drawGrid = useCallback(() => {
-    const grid = overlayRef.current;
-    if (!grid) return;
+    const canvas = overlayRef.current;
+    const ctx = canvas.getContext("2d");
 
-    const cssW = W * scale;
-    const cssH = H * scale;
+    // Match main canvas dimensions exactly
+    canvas.width = W * scale * dpr;
+    canvas.height = H * scale * dpr;
+    canvas.style.width = `${W * scale}px`;
+    canvas.style.height = `${H * scale}px`;
 
-    // Match the main canvas' CSS size & backing store exactly
-    grid.style.width = `${cssW}px`;
-    grid.style.height = `${cssH}px`;
-    grid.width = Math.round(cssW * dpr);
-    grid.height = Math.round(cssH * dpr);
-
-    const ctx = grid.getContext("2d");
-    ctx.clearRect(0, 0, grid.width, grid.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
     if (!showGrid) return;
 
-    ctx.save();
-    // 1 drawing unit == 1 CSS pixel
     ctx.scale(dpr, dpr);
-    ctx.strokeStyle = "rgba(0,0,0,.25)";
+    ctx.strokeStyle = "rgba(0,0,0,0.1)";
     ctx.lineWidth = 1;
 
+    // Draw vertical lines
     for (let x = 0; x <= W; x++) {
-      const px = Math.round(x * scale) + 0.5; // pixel-align
+      const px = x * scale;
       ctx.beginPath();
       ctx.moveTo(px, 0);
-      ctx.lineTo(px, cssH);
+      ctx.lineTo(px, H * scale);
       ctx.stroke();
     }
+
+    // Draw horizontal lines
     for (let y = 0; y <= H; y++) {
-      const py = Math.round(y * scale) + 0.5;
+      const py = y * scale;
       ctx.beginPath();
       ctx.moveTo(0, py);
-      ctx.lineTo(cssW, py);
+      ctx.lineTo(W * scale, py);
       ctx.stroke();
     }
-    ctx.restore();
-  }, [showGrid, dpr, scale]);
+  }, [showGrid, scale, dpr]);
 
   // First paint must be aligned: run before browser paints
   useLayoutEffect(() => {
@@ -556,31 +543,25 @@ export default function KwaxelGenerator() {
             height: `${H * scale}px`,
           }}
         >
-          {/* Grid canvas FIRST, main canvas SECOND */}
+          {/* Grid overlay */}
           <canvas
             ref={overlayRef}
-            width={W * scale * dpr}
-            height={H * scale * dpr}
-            className="absolute pointer-events-none"
+            className="absolute top-0 left-0 pointer-events-none"
             style={{
               width: `${W * scale}px`,
               height: `${H * scale}px`,
-              inset: 0,
-              display: "block",
-              zIndex: 1, // can be 0 or 1, since main canvas will be above
               imageRendering: "pixelated",
+              zIndex: 1
             }}
             aria-hidden
           />
+          {/* Main canvas */}
           <canvas
             ref={canvasRef}
-            width={W * scale * dpr}
-            height={H * scale * dpr}
-            className="absolute"
+            className="absolute top-0 left-0"
             style={{
               width: `${W * scale}px`,
               height: `${H * scale}px`,
-              inset: 0,
               imageRendering: "pixelated",
               backgroundImage:
                 "linear-gradient(45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
@@ -589,7 +570,7 @@ export default function KwaxelGenerator() {
                 "linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.08) 75%)",
               backgroundSize: `${scale}px ${scale}px`,
               backgroundPosition: checkerPos,
-              zIndex: 2, // ensure main canvas is above grid
+              zIndex: 2
             }}
             role="img"
             aria-label="32 by 32 pixel canvas"
