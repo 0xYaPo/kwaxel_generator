@@ -5,13 +5,22 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [
+        'react', 
+        'react-dom',
+        '@multiversx/sdk-dapp',
+        '@multiversx/sdk-dapp/hooks'
+      ],
     },
   },
   resolve: {
     alias: {
       'react': 'react',
-      'react-dom': 'react-dom'
+      'react-dom': 'react-dom',
+      '@multiversx/sdk-dapp': '@multiversx/sdk-dapp'
     }
+  },
+  optimizeDeps: {
+    include: ['@multiversx/sdk-dapp']
   }
 })
