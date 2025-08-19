@@ -84,10 +84,25 @@ input[type="range"]::-moz-range-thumb{
   width: 16px; height: 16px; border: none; border-radius: 999px; background: #111827;
 }
 
-/* Canvas: keep pixels crisp */
-canvas{
+/* Canvas: keep pixels crisp and ensure proper positioning */
+canvas {
   display: block;
   image-rendering: pixelated;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Canvas container styles */
+.canvas-container {
+  position: relative;
+  display: inline-block;
+  background: white;
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
 }
 
 /* Optional container helper if you want a centered max-width wrapper */

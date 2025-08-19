@@ -537,32 +537,32 @@ export default function KwaxelGenerator() {
 
         {/* Canvas block — wrapper uses exact content size so overlay fits perfectly */}
         <div
-          className="relative inline-block overflow-hidden bg-white"
+          className="canvas-container"
           style={{
             width: `${W * scale}px`,
             height: `${H * scale}px`,
           }}
         >
-          {/* Grid overlay */}
           <canvas
             ref={overlayRef}
-            className="absolute top-0 left-0 pointer-events-none"
+            width={W * scale * dpr}
+            height={H * scale * dpr}
+            className="pointer-events-none"
             style={{
               width: `${W * scale}px`,
               height: `${H * scale}px`,
-              imageRendering: "pixelated",
               zIndex: 1
             }}
             aria-hidden
           />
-          {/* Main canvas */}
           <canvas
             ref={canvasRef}
-            className="absolute top-0 left-0"
+            width={W * scale * dpr}
+            height={H * scale * dpr}
             style={{
               width: `${W * scale}px`,
               height: `${H * scale}px`,
-              imageRendering: "pixelated",
+              zIndex: 2,
               backgroundImage:
                 "linear-gradient(45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
                 "linear-gradient(-45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
@@ -570,14 +570,13 @@ export default function KwaxelGenerator() {
                 "linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.08) 75%)",
               backgroundSize: `${scale}px ${scale}px`,
               backgroundPosition: checkerPos,
-              zIndex: 2
             }}
-            role="img"
-            aria-label="32 by 32 pixel canvas"
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
             onPointerLeave={onPointerUp}
+            role="img"
+            aria-label="32 by 32 pixel canvas"
           />
         </div>
 
