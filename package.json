@@ -5,12 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build":  "chmod +x node_modules/.bin/vite && vite build",
+    "build": "chmod +x node_modules/.bin/vite && vite build",
     "vercel-build": "npm ci && npm run build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@multiversx/sdk-core": "^15.0.1",
+    "@multiversx/sdk-dapp": "^5.1.1",
+    "@multiversx/sdk-dapp-ui": "^0.0.26",
+    "@multiversx/sdk-wallet-connect-provider": "^6.1.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
