@@ -42,7 +42,7 @@ button{
   padding: 0.375rem 0.75rem;         /* ~py-1.5 px-3 */
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #fff;
+  background: #b1b1b1;
   cursor: pointer;
   transition: background .15s ease, box-shadow .15s ease;
 }

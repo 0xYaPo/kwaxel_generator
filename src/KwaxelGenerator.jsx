@@ -556,25 +556,7 @@ export default function KwaxelGenerator() {
             height: `${H * scale}px`,
           }}
         >
-          <canvas
-            ref={canvasRef}
-            width={W * scale * dpr}
-            height={H * scale * dpr}
-            style={{
-              width: `${W * scale}px`,
-              height: `${H * scale}px`,
-              imageRendering: "pixelated",
-              backgroundImage:
-                "linear-gradient(45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
-                "linear-gradient(-45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
-                "linear-gradient(45deg, transparent 75%, rgba(0,0,0,.08) 75%)," +
-                "linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.08) 75%)",
-              backgroundSize: `${scale}px ${scale}px`,
-              backgroundPosition: checkerPos,
-            }}
-            role="img"
-            aria-label="32 by 32 pixel canvas"
-          />
+          {/* Grid canvas FIRST, main canvas SECOND */}
           <canvas
             ref={overlayRef}
             width={W * scale * dpr}
@@ -585,10 +567,36 @@ export default function KwaxelGenerator() {
               height: `${H * scale}px`,
               inset: 0,
               display: "block",
-              zIndex: 1,
+              zIndex: 1, // can be 0 or 1, since main canvas will be above
               imageRendering: "pixelated",
             }}
             aria-hidden
+          />
+          <canvas
+            ref={canvasRef}
+            width={W * scale * dpr}
+            height={H * scale * dpr}
+            className="absolute"
+            style={{
+              width: `${W * scale}px`,
+              height: `${H * scale}px`,
+              inset: 0,
+              imageRendering: "pixelated",
+              backgroundImage:
+                "linear-gradient(45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
+                "linear-gradient(-45deg, rgba(0,0,0,.08) 25%, transparent 25%)," +
+                "linear-gradient(45deg, transparent 75%, rgba(0,0,0,.08) 75%)," +
+                "linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.08) 75%)",
+              backgroundSize: `${scale}px ${scale}px`,
+              backgroundPosition: checkerPos,
+              zIndex: 2, // ensure main canvas is above grid
+            }}
+            role="img"
+            aria-label="32 by 32 pixel canvas"
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerLeave={onPointerUp}
           />
         </div>
 
