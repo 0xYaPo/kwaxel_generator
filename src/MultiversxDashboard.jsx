@@ -7,9 +7,9 @@ import {
   useGetPendingTransactions,
   useGetCompletedTransactions,
   useGetActiveTransactionsStatus,
-  useLogout
-} from "@multiversx/sdk-dapp/hooks";
-import { refreshAccount } from "@multiversx/sdk-dapp/utils";
+  useLogout,
+  refreshAccount
+} from "@multiversx/sdk-dapp";
 import { Address, Transaction, GasLimit } from "@multiversx/sdk-core";
 
 export default function MultiversxDashboard() {
