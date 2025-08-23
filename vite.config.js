@@ -6,7 +6,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@multiversx/sdk-dapp/hooks': '@multiversx/sdk-dapp/out/react/hooks',
-      '@multiversx/sdk-dapp/ui': '@multiversx/sdk-dapp/out/ui',
+      '@multiversx/sdk-dapp/ui': '@multiversx/sdk-dapp/out/react/ui',
     }
   },
   optimizeDeps: {
