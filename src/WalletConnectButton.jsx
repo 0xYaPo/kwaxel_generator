@@ -1,6 +1,6 @@
 import React from "react";
-import { useGetAccount, useGetLoginInfo, useLogout } from "@multiversx/sdk-dapp/hooks";
-import { WalletConnectLoginButton } from "@multiversx/sdk-dapp/ui";
+import { useGetAccount, useGetLoginInfo, useLogout } from "@multiversx/sdk-dapp/out/react/hooks";
+import { WalletConnectLoginButton } from "@multiversx/sdk-dapp/out/ui";
 
 export default function WalletConnectButton() {
   const { isLoggedIn } = useGetLoginInfo();

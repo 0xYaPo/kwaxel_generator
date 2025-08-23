@@ -3,7 +3,7 @@ import {
   DappProvider,
   NotificationModal,
   TransactionsToastList,
-} from "@multiversx/sdk-dapp/ui";
+} from "@multiversx/sdk-dapp/out/ui";
 import { dappConfig } from "./mvx-dapp-config";
 
 export default function MultiversxProvider({ children }) {
